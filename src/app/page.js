@@ -6,6 +6,9 @@ import { ActionAreaCard, ImgMediaCard } from "./components/Card";
 import { useTheme } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Modal from "@mui/material/Modal";
+import SearchIcon from "@mui/icons-material/Search";
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
 
 const style = {
   position: "absolute",
@@ -111,12 +114,49 @@ const cardData = [
   },
 ];
 
-export default function Home({ searchQuery }) {
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: "#f2f2f2",
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  maxWidth: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+  border: "1px solid #d7dcdd",
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "70%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
+
+export default function Home() {
   const theme = useTheme();
   const [page, setPage] = React.useState(1);
   const [open, setOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
-  console.log(searchQuery);
   const filteredData = cardData.filter(
     (card) =>
       card.title.includes(searchQuery) || card.description.includes(searchQuery)
@@ -134,6 +174,9 @@ export default function Home({ searchQuery }) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-start bg-white p-5 pt-20">
@@ -142,10 +185,20 @@ export default function Home({ searchQuery }) {
           flexGrow: 1,
           flexDirection: "column",
           justifyContent: "center",
-          alignContent: "start",
+          alignItems: "center",
           display: "flex",
         }}
       >
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Search tenders"
+            inputProps={{ "aria-label": "search" }}
+            onChange={handleSearchChange}
+          />
+        </Search>
         <Grid container spacing={1} justifyContent="space-evenly">
           {data
             .slice((page - 1) * itemsPerPage, page * itemsPerPage)

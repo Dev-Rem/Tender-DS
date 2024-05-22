@@ -80,8 +80,8 @@ export default function AboutTenders() {
         <strong>6. Contract Management:</strong>
         <ul>
           <li>
-            Monitoring: Regularly monitor the contractor's performance against
-            the contract terms.
+            Monitoring: Regularly monitor the contractor&apos;s performance
+            against the contract terms.
           </li>
           <li>
             Reporting: Ensure regular reporting and communication between the
