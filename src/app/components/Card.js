@@ -16,7 +16,14 @@ const handleDownload = (file) => {
   document.body.removeChild(link);
 };
 
-export function ImgMediaCard({ title, description, image, file, handleOpen }) {
+export function ImgMediaCard({
+  title,
+  description,
+  image,
+  file,
+  handleOpen,
+  handleDownload,
+}) {
   return (
     <Box
       sx={{
@@ -88,7 +95,13 @@ export function ImgMediaCard({ title, description, image, file, handleOpen }) {
   );
 }
 
-export function ActionAreaCard({ title, description, image, file }) {
+export function ActionAreaCard({
+  title,
+  description,
+  image,
+  file,
+  handleDownload,
+}) {
   return (
     <Card sx={{ maxWidth: "100%" }}>
       <CardMedia
