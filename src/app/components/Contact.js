@@ -25,10 +25,7 @@ export default function ContactUs() {
 
   const handleSubmit = () => {
     setShowAlert(true);
-    console.log("Complaint submitted:", complaint);
-
     setComplaint("");
-    setTimeout(() => setShowAlert(false), 3000);
   };
 
   return (
@@ -41,11 +38,13 @@ export default function ContactUs() {
               message={
                 "Your complaint has been sent successfully, thank you for your feedback."
               }
+              setShowAlert={setShowAlert}
             />
           ) : (
             <SimpleAlert
               severity={"error"}
               message={"You have not written any complaint to submit."}
+              setShowAlert={setShowAlert}
             />
           ))}
 
