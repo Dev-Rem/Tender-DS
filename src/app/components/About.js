@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 export default function AboutTenders() {
   return (
     <>
-      <Typography variant="body2" color="text.secondary">
+      <Typography component={"span"} variant="body2" color="text.secondary">
         A tender is a formal invitation to suppliers to submit bids for the
         supply of goods, services, or works, typically issued by a government or
         large organization. It serves as a competitive procurement process to
