@@ -6,10 +6,9 @@ import { ActionAreaCard, ImgMediaCard } from "./components/Card";
 import { useTheme } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Modal from "@mui/material/Modal";
-import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
+import { Typography } from "@mui/material";
 
+import AppBarComponent from "./components/AppBar";
 const style = {
   position: "absolute",
   top: "50%",
@@ -114,43 +113,6 @@ const cardData = [
   },
 ];
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: "#f2f2f2",
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  maxWidth: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-  border: "1px solid #d7dcdd",
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "70%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-
 export default function Home() {
   const theme = useTheme();
   const [page, setPage] = React.useState(1);
@@ -174,57 +136,55 @@ export default function Home() {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-start bg-white p-5 pt-20">
+      <AppBarComponent setSearchQuery={setSearchQuery} />
+
       <Box
         sx={{
           flexGrow: 1,
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "left",
           display: "flex",
         }}
       >
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search tenders"
-            inputProps={{ "aria-label": "search" }}
-            onChange={handleSearchChange}
-          />
-        </Search>
-        <Grid container spacing={1} justifyContent="space-evenly">
-          {data
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((card, index) => (
-              <Grid
-                key={index}
-                xs={12}
-                sm={6}
-                md={6}
-                lg={3}
-                sx={{ textAlign: "left", padding: 2 }}
-              >
-                <ImgMediaCard {...card} handleOpen={() => handleOpen(card)} />
-              </Grid>
-            ))}
-        </Grid>
-        <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
-          <Pagination
-            count={numPages}
-            page={page}
-            onChange={handleChangePage}
-            variant="outlined"
-            shape="rounded"
-            size="large"
-          />
-        </Box>
+        {data ? (
+          <>
+            <Grid container spacing={1} justifyContent="space-evenly">
+              {data
+                .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+                .map((card, index) => (
+                  <Grid
+                    key={index}
+                    xs={12}
+                    sm={6}
+                    md={6}
+                    lg={3}
+                    sx={{ textAlign: "left", padding: 2 }}
+                  >
+                    <ImgMediaCard
+                      {...card}
+                      handleOpen={() => handleOpen(card)}
+                    />
+                  </Grid>
+                ))}
+            </Grid>
+            <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+              <Pagination
+                count={numPages}
+                page={page}
+                onChange={handleChangePage}
+                variant="outlined"
+                shape="rounded"
+                size="large"
+              />
+            </Box>
+          </>
+        ) : (
+          <Typography variant="h6">No tenders to display</Typography>
+        )}
       </Box>
       <Modal
         open={open}
