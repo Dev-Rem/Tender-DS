@@ -17,10 +17,12 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
-
+import SearchIcon from "@mui/icons-material/Search";
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
 import Modal from "@mui/material/Modal";
 import AboutTenders from "./About";
-import { LoginForm, RegisterForm } from "./AuthForms";
+import AuthenticationForm from "./AuthForms";
 import ContactUs from "./Contact";
 
 const style = {
@@ -40,13 +42,52 @@ const style = {
   overflowY: "auto",
   p: 4,
 };
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
 
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 const drawerWidth = 240;
 const navItems = ["About", "Contact", "Login"];
 
 function DrawerAppBar(props) {
   const { window } = props;
+  const { setSearchQuery } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const modalContentRef = React.useRef(null);
@@ -61,6 +102,10 @@ function DrawerAppBar(props) {
   };
 
   const handleClose = () => setOpen(false);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
@@ -113,7 +158,16 @@ function DrawerAppBar(props) {
             >
               Tender Download System
             </Typography>
-
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search tenders"
+                inputProps={{ "aria-label": "search" }}
+                onChange={handleSearchChange}
+              />
+            </Search>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               {navItems.map((item) => (
                 <Button
@@ -157,7 +211,7 @@ function DrawerAppBar(props) {
         <Box sx={style}>
           {modalContentRef.current === "About" && <AboutTenders />}
           {modalContentRef.current === "Contact" && <ContactUs />}
-          {modalContentRef.current === "Login" && <LoginForm />}
+          {modalContentRef.current === "Login" && <AuthenticationForm />}
         </Box>
       </Modal>
     </div>
