@@ -43,49 +43,38 @@ describe("ContactUs Component", () => {
     expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
   });
 
-  test("submitting a complaint shows success alert when input is not empty", async () => {
+  test("shows success alert when a complaint is submitted", async () => {
     render(<ContactUs />);
 
-    fireEvent.change(screen.getByLabelText(/Your Complaint/i), {
-      target: { value: "This is a complaint." },
-    });
-    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
+    const complaintInput = screen.getByLabelText(/Your Complaint/i);
+    fireEvent.change(complaintInput, { target: { value: "Test complaint" } });
 
-    await waitFor(() => {
-      expect(SimpleAlert).toHaveBeenCalledWith(
-        {
-          severity: "success",
-          message:
-            "Your complaint has been sent successfully, thank you for your feedback.",
-          setShowAlert: expect.any(Function),
-        },
-        {}
-      );
-    });
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Your complaint has been sent successfully, thank you for your feedback."
     );
+
+    await waitFor(
+      () => expect(screen.queryByRole("alert")).not.toBeInTheDocument(),
+      { timeout: 3000 }
+    );
   });
 
-  test("submitting a complaint shows error alert when input is empty", async () => {
+  test("shows error alert when no complaint is submitted", async () => {
     render(<ContactUs />);
 
-    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
-
-    await waitFor(() => {
-      expect(SimpleAlert).toHaveBeenCalledWith(
-        {
-          severity: "error",
-          message: "You have not written any complaint to submit.",
-          setShowAlert: expect.any(Function),
-        },
-        {}
-      );
-    });
+    const submitButton = screen.getByRole("button", { name: /submit/i });
+    fireEvent.click(submitButton);
 
     expect(screen.getByRole("alert")).toHaveTextContent(
       "You have not written any complaint to submit."
+    );
+
+    await waitFor(
+      () => expect(screen.queryByRole("alert")).not.toBeInTheDocument(),
+      { timeout: 3000 }
     );
   });
 
