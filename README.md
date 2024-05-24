@@ -1,3 +1,23 @@
+
+## Getting Started
+
+### Clone the Repository
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+
+Next, install the dependencies required for the project:
+
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
